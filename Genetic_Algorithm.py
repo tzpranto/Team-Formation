@@ -8,10 +8,11 @@ from Utility import tournament_selection
 from Utility import initialize
 from Utility import generate_random_tasks
 from Executor import execute_single_state
-
+from Utility import seeded_initialize
 
 def plain_ga(tasks, graph, skill_set, iteration=1000, pop_size=100):
-    P = initialize(tasks, skill_set, pop_size)
+    #P = initialize(tasks, skill_set, pop_size)
+    P = seeded_initialize(tasks,graph,skill_set,pop_size)
     best_individual = None
 
     for i in range(iteration):

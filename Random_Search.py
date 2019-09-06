@@ -4,14 +4,17 @@ from Utility import create_individual
 from Utility import fitness
 from Utility import generate_random_tasks
 from Executor import execute_single_state
+from Utility import seeded_create_individual
 
 
 def random_search(tasks, graph, skill_set, iteration=1000):
-    individual = create_individual(tasks, skill_set)
+    #individual = create_individual(tasks, skill_set)
+    individual = seeded_create_individual(tasks, graph, skill_set)
     best_individual = individual
 
     for i in range(iteration):
-        individual = create_individual(tasks, skill_set)
+        #individual = create_individual(tasks, skill_set)
+        individual = seeded_create_individual(tasks, graph, skill_set)
         #print("Iteration:", (i+1), fitness(graph, individual))
         if fitness(graph, individual) < fitness(graph, best_individual):
             best_individual = individual

@@ -26,6 +26,36 @@ def initialize(tasks, skill_set, pop_size=100):
     return population
 
 
+def seeded_create_individual(tasks, graph, skill_set):
+    team = []
+    for task in tasks:
+        set1 = set(skill_set[task])
+        set2 = set(team)
+        if not bool(set1.intersection(set2)):
+            all_co_authors = set()
+            for author in team:
+                co_authors = set(graph[author]["co_authors"].keys())
+                all_co_authors = all_co_authors.union(co_authors)
+
+            candidates = set1.intersection(all_co_authors)
+            if bool(candidates):
+                team.append(random.choice(list(candidates)))
+            else:
+                team.append(random.choice(list(set1)))
+
+    return {"tasks": tasks, "team": team}
+
+
+def seeded_initialize(tasks, graph, skill_set, pop_size=100):
+    population = []
+
+    for i in range(pop_size):
+        individual = seeded_create_individual(tasks,graph,skill_set)
+        population.append(individual)
+    return population
+
+
+
 def copy_individual(individual):
     return copy.deepcopy(individual)
 
