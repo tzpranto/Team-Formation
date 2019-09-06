@@ -1,14 +1,15 @@
 import random
 import copy
+from Graph_Generator import load_data
 
 
-def generate_random_tasks(skill_set, n=6):
+def generate_random_tasks(skill_set, task_size=6):
     skills = skill_set.keys()
-    tasks = random.sample(skills,k=n)
+    tasks = random.sample(skills, k=task_size)
     return tasks
 
 
-def create_individual(tasks,skill_set, n=6):
+def create_individual(tasks, skill_set):
     team = []
     for task in tasks:
         person = random.choice(skill_set[task])
@@ -16,11 +17,11 @@ def create_individual(tasks,skill_set, n=6):
     return {"tasks": tasks, "team": team}
 
 
-def initialize(skill_set,pop_size=100,n=6):
+def initialize(tasks, skill_set, pop_size=100):
     population = []
-    tasks = generate_random_tasks(skill_set, n)
+
     for i in range(pop_size):
-        individual = create_individual(tasks,skill_set,n)
+        individual = create_individual(tasks, skill_set)
         population.append(individual)
     return population
 
@@ -29,7 +30,7 @@ def copy_individual(individual):
     return copy.deepcopy(individual)
 
 
-def fitness(graph,individual):
+def fitness(graph, individual):
     team = individual["team"]
     score = 0.0
 
@@ -42,10 +43,10 @@ def fitness(graph,individual):
                 weight = graph[author1]["co_authors"].get(author2)
             score = score + (1.0 - weight)
 
-    return score/2.0
+    return score / 2.0
 
 
-def mutate(graph,skill_set,individual):
+def mutate(graph, skill_set, individual):
     new_individual = copy_individual(individual)
     to_delete = random.choice(individual["team"])
     new_individual["team"].remove(to_delete)
@@ -70,13 +71,61 @@ def mutate(graph,skill_set,individual):
     return new_individual
 
 
+def tournament_selection(graph, population, tournament_size=2):
+    best_individual = random.choice(population)
+
+    for i in range(1, tournament_size):
+        individual = random.choice(population)
+
+        if fitness(graph, individual) < fitness(graph, best_individual):
+            best_individual = individual
+
+    return copy_individual(best_individual)
+
+
+def crossover(skill_set, individual1, individual2):
+    tasks = individual1["tasks"]
+    child_1 = {"tasks": tasks, "team": []}
+    child_2 = {"tasks": tasks, "team": []}
+
+    set1 = set(individual1["team"])
+    set2 = set(individual2["team"])
+
+    team1 = set()
+    team2 = set()
+
+    for task in tasks:
+        set3 = set(skill_set[task])
+        candidate1 = set()
+        candidate2 = set()
+        if random.random() < 0.5:
+            candidate1 = set3.intersection(set1)
+            candidate2 = set3.intersection(set2)
+
+        else:
+            candidate1 = set3.intersection(set2)
+            candidate2 = set3.intersection(set1)
+
+        team1.add(random.choice(list(candidate1)))
+        team2.add(random.choice(list(candidate2)))
+
+    child_1["team"] = list(team1)
+    child_2["team"] = list(team2)
+
+    return child_1,child_2
+
+
 if __name__ == "__main__":
-    from Graph_Generator import load_data
-    directory = "Preprocessed Datasets"
-    dataset = "DBLP"
-    #social_graph, skill_map = build_graph(dataset)
     social_graph, skill_map = load_data()
-    #initialize(skill_map)
     tasks = generate_random_tasks(skill_map)
-    individual = create_individual(tasks,skill_map)
-    mutate(social_graph,skill_map,individual)
+    population = initialize(tasks, skill_map)
+    individual1 = tournament_selection(social_graph, population)
+    individual2 = tournament_selection(social_graph, population)
+
+    print(individual1["team"])
+    print(individual2["team"])
+
+    child1, child2 = crossover(skill_map, individual1, individual2)
+
+    print(child1["team"])
+    print(child2["team"])
