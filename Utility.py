@@ -8,8 +8,7 @@ def generate_random_tasks(skill_set, n=6):
     return tasks
 
 
-def create_individual(skill_set, n=6):
-    tasks = generate_random_tasks(skill_set,n)
+def create_individual(tasks,skill_set, n=6):
     team = []
     for task in tasks:
         person = random.choice(skill_set[task])
@@ -17,10 +16,11 @@ def create_individual(skill_set, n=6):
     return {"tasks": tasks, "team": team}
 
 
-def initialize(skil_set,pop_size=100,n=6):
+def initialize(skill_set,pop_size=100,n=6):
     population = []
+    tasks = generate_random_tasks(skill_set, n)
     for i in range(pop_size):
-        individual = create_individual(skill_map,n)
+        individual = create_individual(tasks,skill_set,n)
         population.append(individual)
     return population
 
@@ -77,5 +77,6 @@ if __name__ == "__main__":
     #social_graph, skill_map = build_graph(dataset)
     social_graph, skill_map = load_data()
     #initialize(skill_map)
-    individual = create_individual(skill_map)
+    tasks = generate_random_tasks(skill_map)
+    individual = create_individual(tasks,skill_map)
     mutate(social_graph,skill_map,individual)
