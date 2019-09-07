@@ -1,21 +1,21 @@
-import pandas as pd
 import io
 import pickle
+import copy
 
 
-def save_data(graph,skill_set):
-    file = open('Objects/social_graph.pkl','wb')
+def save_data(graph,skill_set, dataset):
+    file = open('Objects/social_graph_'+dataset+'.pkl','wb')
     pickle.dump(graph,file,pickle.HIGHEST_PROTOCOL)
     file.close()
-    file = open('Objects/skill_map.pkl','wb')
+    file = open('Objects/skill_map_'+dataset+'.pkl','wb')
     pickle.dump(skill_set,file,pickle.HIGHEST_PROTOCOL)
 
 
-def load_data():
-    file = open('Objects/social_graph.pkl','rb')
+def load_data(dataset):
+    file = open('Objects/social_graph_'+dataset+'.pkl','rb')
     graph = pickle.load(file)
     file.close()
-    file = open('Objects/skill_map.pkl','rb')
+    file = open('Objects/skill_map_'+dataset+'.pkl','rb')
     skill_set = pickle.load(file)
     return graph,skill_set
 
@@ -24,8 +24,8 @@ def build_graph(dataset, skiprow=0):
     coauthor_filename = directory + "/" + dataset + "_coauthor.csv"
     skill_filename = directory + "/" + dataset + "_skill.csv"
 
-    coauthor_file = io.open(coauthor_filename,'r')
-    skill_file = io.open(skill_filename,'r')
+    coauthor_file = io.open(coauthor_filename,'r',errors='ignore')
+    skill_file = io.open(skill_filename,'r',errors='ignore')
 
     lines = coauthor_file.readlines()
 
@@ -66,7 +66,17 @@ def build_graph(dataset, skiprow=0):
 
     coauthor_file.close()
     skill_file.close()
-    save_data(graph, skill_set)
+    skills = skill_set.keys()
+    filtered_skill_set = {}
+
+    for skill in skills:
+        if len(skill_set[skill]) > 20:
+            filtered_skill_set[skill] = skill_set[skill]
+
+
+    print(len(filtered_skill_set))
+
+    save_data(graph, filtered_skill_set, dataset)
 
     return graph,skill_set
 
@@ -74,7 +84,7 @@ def build_graph(dataset, skiprow=0):
 if __name__ == "__main__":
     directory = "Preprocessed Datasets"
     dataset = "DBLP"
-    #social_graph, skill_map = build_graph(dataset)
-    social_graph, skill_map = load_data()
+    social_graph, skill_map = build_graph(dataset)
+    #social_graph, skill_map = load_data(dataset)
     print(len(social_graph.keys()))
     print(len(skill_map.keys()))

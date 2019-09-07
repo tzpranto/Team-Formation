@@ -55,7 +55,6 @@ def seeded_initialize(tasks, graph, skill_set, pop_size=100):
     return population
 
 
-
 def copy_individual(individual):
     return copy.deepcopy(individual)
 
@@ -71,6 +70,7 @@ def fitness(graph, individual):
                 weight = 1.0
             elif graph[author1]["co_authors"].get(author2):
                 weight = graph[author1]["co_authors"].get(author2)
+                #weight = 0.5
             score = score + (1.0 - weight)
 
     return score / 2.0
@@ -146,7 +146,8 @@ def crossover(skill_set, individual1, individual2):
 
 
 if __name__ == "__main__":
-    social_graph, skill_map = load_data()
+    dataset = "StackOverflow"
+    social_graph, skill_map = load_data(dataset)
     tasks = generate_random_tasks(skill_map)
     population = initialize(tasks, skill_map)
     individual1 = tournament_selection(social_graph, population)

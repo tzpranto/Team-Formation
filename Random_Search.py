@@ -28,6 +28,7 @@ def random_search(tasks, graph, skill_set, iteration=1000):
 
 
 if __name__ == "__main__":
+    dataset = "DBLP"
     random.seed(5)
-    social_graph, skill_map = load_data()
-    execute_single_state(social_graph,skill_map,random_search)
+    social_graph, skill_map = load_data(dataset)
+    execute_single_state(social_graph,skill_map,random_search, iteration=1000, sample=10)

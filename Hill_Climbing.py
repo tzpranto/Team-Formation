@@ -27,7 +27,8 @@ def hill_climbing(tasks, graph, skill_set, iteration=1000):
 
 
 def steepest_ascent_hill_climbing(tasks, graph, skill_set, iteration=1000, extra_arg=100):
-    best_individual = create_individual(tasks, skill_set)
+    #best_individual = create_individual(tasks, skill_set)
+    best_individual = seeded_create_individual(tasks, graph, skill_set)
 
     for i in range(iteration):
         new_individual = mutate(graph, skill_set, best_individual)
@@ -75,6 +76,7 @@ def steepest_ascent_hill_climbing_with_replacement(tasks, graph, skill_set, iter
 
 
 if __name__ == "__main__":
+    dataset = "Stackoverflow"
     random.seed(5)
-    social_graph, skill_map = load_data()
+    social_graph, skill_map = load_data(dataset)
     execute_single_state(social_graph, skill_map, steepest_ascent_hill_climbing_with_replacement)
