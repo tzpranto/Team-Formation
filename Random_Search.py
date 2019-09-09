@@ -8,13 +8,13 @@ from Utility import seeded_create_individual
 
 
 def random_search(tasks, graph, skill_set, iteration=1000):
-    #individual = create_individual(tasks, skill_set)
-    individual = seeded_create_individual(tasks, graph, skill_set)
+    individual = create_individual(tasks, skill_set)
+    #individual = seeded_create_individual(tasks, graph, skill_set)
     best_individual = individual
 
     for i in range(iteration):
-        #individual = create_individual(tasks, skill_set)
-        individual = seeded_create_individual(tasks, graph, skill_set)
+        individual = create_individual(tasks, skill_set)
+        #individual = seeded_create_individual(tasks, graph, skill_set)
         #print("Iteration:", (i+1), fitness(graph, individual))
         if fitness(graph, individual) < fitness(graph, best_individual):
             best_individual = individual
@@ -28,7 +28,7 @@ def random_search(tasks, graph, skill_set, iteration=1000):
 
 
 if __name__ == "__main__":
-    dataset = "DBLP"
+    dataset = "Stackoverflow"
     random.seed(5)
     social_graph, skill_map = load_data(dataset)
-    execute_single_state(social_graph,skill_map,random_search, iteration=1000, sample=10)
+    execute_single_state(social_graph,skill_map,random_search, iteration=1000, task_size=6)

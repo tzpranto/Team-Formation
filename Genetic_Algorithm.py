@@ -13,8 +13,8 @@ import numpy
 
 
 def plain_ga(tasks, graph, skill_set, iteration=1000, pop_size=100):
-    #P = initialize(tasks, skill_set, pop_size)
-    P = seeded_initialize(tasks,graph,skill_set,pop_size)
+    P = initialize(tasks, skill_set, pop_size)
+    #P = seeded_initialize(tasks,graph,skill_set,pop_size)
     best_individual = None
 
     for i in range(iteration):
@@ -43,8 +43,8 @@ def plain_ga(tasks, graph, skill_set, iteration=1000, pop_size=100):
 
 
 def elitist_ga(tasks, graph, skill_set, iteration=1000, pop_size=100, elites_size=20):
-    #P = initialize(tasks, skill_set, pop_size)
-    P = seeded_initialize(tasks,graph,skill_set,pop_size)
+    P = initialize(tasks, skill_set, pop_size)
+    #P = seeded_initialize(tasks,graph,skill_set,pop_size)
     best_individual = None
 
     for i in range(iteration):
@@ -83,7 +83,7 @@ def elitist_ga(tasks, graph, skill_set, iteration=1000, pop_size=100, elites_siz
 
 
 if __name__ == "__main__":
-    dataset = "DBLP"
+    dataset = "Stackoverflow"
     random.seed(5)
     social_graph, skill_map = load_data(dataset)
-    execute_single_state(social_graph, skill_map, elitist_ga, sample=10)
+    execute_single_state(social_graph, skill_map, elitist_ga)

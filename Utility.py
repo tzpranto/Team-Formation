@@ -73,7 +73,7 @@ def fitness(graph, individual):
                 #weight = 0.5
             score = score + (1.0 - weight)
 
-    return score / 2.0
+    return score
 
 
 def mutate(graph, skill_set, individual):

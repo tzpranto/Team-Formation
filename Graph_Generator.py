@@ -70,7 +70,7 @@ def build_graph(dataset, skiprow=0):
     filtered_skill_set = {}
 
     for skill in skills:
-        if len(skill_set[skill]) > 20:
+        if len(skill_set[skill]) > 5:
             filtered_skill_set[skill] = skill_set[skill]
 
 
