@@ -34,10 +34,12 @@ def plain_ga(tasks, graph, skill_set, iteration=1000, pop_size=100):
 
         P = Q
 
+    '''
     print("Best Individual:")
     print("Tasks: ", best_individual["tasks"])
     print("Team: ", best_individual["team"])
     print("Fitness: ", fitness(graph, best_individual))
+    '''
 
     return best_individual
 
@@ -74,16 +76,25 @@ def elitist_ga(tasks, graph, skill_set, iteration=1000, pop_size=100, elites_siz
 
         P = Q
 
+    '''
     print("Best Individual:")
     print("Tasks: ", best_individual["tasks"])
     print("Team: ", best_individual["team"])
     print("Fitness: ", fitness(graph, best_individual))
+    '''
 
     return best_individual
 
 
 if __name__ == "__main__":
-    dataset = "Stackoverflow"
+    dataset = "DBLP"
     random.seed(5)
     social_graph, skill_map = load_data(dataset)
+    print()
+    print("Running Plain GA...")
+    print()
+    execute_single_state(social_graph, skill_map, plain_ga)
+    print()
+    print("Running Eitist GA...")
+    print()
     execute_single_state(social_graph, skill_map, elitist_ga)

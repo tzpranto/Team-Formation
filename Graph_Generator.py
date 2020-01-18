@@ -70,7 +70,7 @@ def build_graph(dataset, skiprow=0):
     filtered_skill_set = {}
 
     for skill in skills:
-        if len(skill_set[skill]) > 5:
+        if len(skill_set[skill]) > 30:
             filtered_skill_set[skill] = skill_set[skill]
 
 
@@ -83,7 +83,7 @@ def build_graph(dataset, skiprow=0):
 
 if __name__ == "__main__":
     directory = "Preprocessed Datasets"
-    dataset = "DBLP"
+    dataset = "Bibsonomy"
     social_graph, skill_map = build_graph(dataset)
     #social_graph, skill_map = load_data(dataset)
     print(len(social_graph.keys()))
