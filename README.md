@@ -1,4 +1,4 @@
-# Team-Formation
+# Team-Formation (Meta-heuristics Project)
 
 ## Dependency:
 Standard python 3.6 with Numpy
